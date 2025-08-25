@@ -1,0 +1,1418 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Flag - Educational Game</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            padding: 30px;
+            position: relative;
+        }
+
+        .screen {
+            display: none;
+        }
+
+        .screen.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h1 {
+            color: #764ba2;
+            font-size: 2.5em;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .start-screen {
+            text-align: center;
+            padding: 40px 20px;
+        }
+
+        .start-screen p {
+            font-size: 1.1em;
+            color: #666;
+            margin: 20px 0;
+            line-height: 1.6;
+        }
+
+        .btn {
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border: none;
+            border-radius: 50px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin: 10px;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+        }
+
+        .game-header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 15px;
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            border-radius: 10px;
+            color: white;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        .flag-display {
+            background: #f5f5f5;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 20px 0;
+            text-align: center;
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .flag-placeholder {
+            color: #999;
+            font-size: 1.2em;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .flag-img {
+            max-width: 100%;
+            max-height: 180px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .options-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin: 20px 0;
+        }
+
+        .option-btn {
+            padding: 15px;
+            border: none;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .option-btn:hover:not(:disabled) {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+        }
+
+        .option-btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .option-btn.correct {
+            background: linear-gradient(135deg, #4caf50 0%, #8bc34a 100%);
+            animation: pulse 0.5s;
+        }
+
+        .option-btn.wrong {
+            background: linear-gradient(135deg, #f44336 0%, #e91e63 100%);
+            animation: shake 0.5s;
+        }
+
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            75% { transform: translateX(5px); }
+        }
+
+        .timer {
+            font-size: 1.2em;
+            transition: all 0.3s;
+        }
+
+        .timer.warning {
+            color: #ffeb3b;
+            transform: scale(1.1);
+        }
+
+        .timer.danger {
+            color: #ff5252;
+            transform: scale(1.2);
+        }
+
+        .info-modal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 20px;
+            padding: 30px;
+            max-width: 900px;
+            width: 90%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            max-height: 85vh;
+            overflow-y: auto;
+        }
+
+        .info-modal.show {
+            display: block;
+            animation: modalIn 0.5s;
+        }
+
+        @keyframes modalIn {
+            from { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+            to { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #764ba2;
+        }
+
+        .modal-title {
+            font-size: 1.5em;
+            color: #764ba2;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 2em;
+            cursor: pointer;
+            color: #764ba2;
+            line-height: 0.5;
+        }
+
+        .close-btn:hover {
+            transform: rotate(90deg);
+            transition: transform 0.3s;
+        }
+
+        .info-item {
+            margin: 15px 0;
+            padding: 12px;
+            background: #f5f5f5;
+            border-radius: 10px;
+        }
+
+        .info-label {
+            font-weight: bold;
+            color: #764ba2;
+        }
+
+        .overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 999;
+        }
+
+        .overlay.show {
+            display: block;
+        }
+
+        .final-score {
+            font-size: 2em;
+            color: #764ba2;
+            margin: 20px 0;
+        }
+
+        .progress-bar {
+            height: 6px;
+            background: #e0e0e0;
+            border-radius: 3px;
+            margin: 20px 0;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: width 0.3s;
+            width: 0%;
+        }
+
+        .loading-spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid rgba(118, 75, 162, 0.2);
+            border-left-color: #764ba2;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            position: absolute;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* Video container styles */
+        .video-container {
+            width: 100%;
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 25px;
+            position: relative;
+            background-color: #000;
+            aspect-ratio: 16/9;
+        }
+
+        .youtube-embed {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .video-loading {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+        }
+
+        .video-error {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .retry-btn {
+            margin-top: 15px;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 5px;
+            background: #764ba2;
+            color: white;
+            cursor: pointer;
+        }
+
+        /* Quiz styles */
+        .quiz-section {
+            margin: 30px 0;
+            padding: 20px;
+            background: #f5f5f5;
+            border-radius: 15px;
+        }
+
+        .quiz-question {
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #764ba2;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 10px;
+        }
+
+        .quiz-option {
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            background: white;
+            color: #333;
+            font-size: 1em;
+            text-align: left;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: 2px solid #ddd;
+        }
+
+        .quiz-option:hover:not(:disabled) {
+            background: #f0f0ff;
+            border-color: #667eea;
+        }
+
+        .quiz-option:disabled {
+            cursor: not-allowed;
+        }
+
+        .quiz-feedback {
+            margin-top: 15px;
+            padding: 10px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .quiz-feedback.correct {
+            background: #e8f5e9;
+            color: #2e7d32;
+            display: block;
+        }
+
+        .quiz-feedback.incorrect {
+            background: #ffebee;
+            color: #c62828;
+            display: block;
+        }
+
+        .next-country-btn {
+            margin-top: 20px;
+            display: none;
+        }
+
+        /* Fullscreen helper styles */
+        .fullscreen提示 {
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: rgba(0, 0, 0, 0.7);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.8em;
+            z-index: 10;
+            pointer-events: none;
+            opacity: 0.7;
+        }
+    </style>
+</head>
+<body>
+    <div class="game-container">
+        <!-- Start Screen -->
+        <div id="startScreen" class="screen active">
+            <div class="start-screen">
+                <h1>🌍 Guess the Flag</h1>
+                <p>Test your knowledge of world flags!</p>
+                <p>• 10 seconds per flag<br>
+                   • 100 points per correct answer<br>
+                   • Watch videos and take quizzes about each country!</p>
+                <button id="startButton" class="btn">Start Game</button>
+            </div>
+        </div>
+
+        <!-- Game Screen -->
+        <div id="gameScreen" class="screen">
+            <div class="game-header">
+                <h1>🌍 Guess the Flag</h1>
+                <div class="progress-bar">
+                    <div id="progressBar" class="progress-fill"></div>
+                </div>
+            </div>
+            
+            <div class="stats">
+                <div>Score: <span id="scoreDisplay">0</span></div>
+                <div>Round: <span id="roundDisplay">1/10</span></div>
+                <div class="timer" id="timerDisplay">10s</div>
+            </div>
+
+            <div class="flag-display">
+                <div id="loadingSpinner" class="loading-spinner" style="display: none;"></div>
+                <div id="flagPlaceholder" class="flag-placeholder" style="display: none;">Flag unavailable</div>
+                <img id="flagImage" class="flag-img" src="" alt="Country Flag">
+            </div>
+
+            <div id="optionsContainer" class="options-grid">
+                <!-- Options will be added here -->
+            </div>
+        </div>
+
+        <!-- Game Over Screen -->
+        <div id="gameOverScreen" class="screen">
+            <div class="start-screen">
+                <h1>🎉 Game Complete!</h1>
+                <div class="final-score">Final Score: <span id="finalScoreDisplay">0</span></div>
+                <p>Great job exploring world flags!</p>
+                <button id="playAgainButton" class="btn">Play Again</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Country Info Modal with YouTube Video and Quiz -->
+    <div id="overlay" class="overlay"></div>
+    <div id="infoModal" class="info-modal">
+        <div class="modal-header">
+            <h2 id="modalTitle" class="modal-title">Country</h2>
+            <button id="closeModal" class="close-btn">×</button>
+        </div>
+        <div class="video-container">
+            <div id="videoLoading" class="video-loading">
+                <div class="loading-spinner"></div>
+            </div>
+            <div id="videoError" class="video-error" style="display: none;">
+                <p>This video is unavailable.</p>
+                <button class="retry-btn" id="retryVideo">Try Again</button>
+            </div>
+            <!-- YouTube embed will be loaded here -->
+            <div id="videoContainer"></div>
+            <div class="fullscreen提示">Click video to toggle fullscreen</div>
+        </div>
+        
+        <!-- Quiz Section -->
+        <div class="quiz-section">
+            <h3 style="margin-bottom: 15px; color: #764ba2;">Test Your Knowledge</h3>
+            <div id="quizQuestion" class="quiz-question"></div>
+            <div id="quizOptions" class="quiz-options"></div>
+            <div id="quizFeedback" class="quiz-feedback"></div>
+            <button id="nextCountryBtn" class="btn next-country-btn">Continue to Next Country</button>
+        </div>
+        
+        <div id="modalContent">
+            <!-- Info will be added here -->
+        </div>
+    </div>
+
+    <script>
+        // Wait for DOM to load
+        window.onload = function() {
+            
+            // --- Simple SFX using Web Audio API ---
+            let __sfxCtx = null;
+            function __getSfxCtx() {
+                if (!__sfxCtx) {
+                    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+                    __sfxCtx = new AudioCtx();
+                }
+                if (__sfxCtx.state === 'suspended') {
+                    __sfxCtx.resume();
+                }
+                return __sfxCtx;
+            }
+            function playSfx(type) {
+                try {
+                    const ctx = __getSfxCtx();
+                    const osc = ctx.createOscillator();
+                    const gain = ctx.createGain();
+                    
+                    let freq = 880;      // default crisp
+                    let dur = 0.15;
+                    let wave = 'sine';
+                    
+                    if (type === 'wrong') {
+                        freq = 220;
+                        dur = 0.28;
+                        wave = 'triangle';
+                    }
+                    
+                    osc.type = wave;
+                    osc.frequency.setValueAtTime(freq, ctx.currentTime);
+                    
+                    // Smooth envelope to avoid clicks
+                    const now = ctx.currentTime;
+                    gain.gain.setValueAtTime(0.0001, now);
+                    gain.gain.exponentialRampToValueAtTime(0.25, now + 0.01);
+                    gain.gain.exponentialRampToValueAtTime(0.0001, now + dur);
+                    
+                    osc.connect(gain);
+                    gain.connect(ctx.destination);
+                    
+                    osc.start(now);
+                    osc.stop(now + dur + 0.05);
+                } catch (e) {
+                    console.warn('SFX error:', e);
+                }
+            }
+            // ---------------------------------------
+// 从YouTube URL中提取视频ID的函数
+            function extractYouTubeVideoId(url) {
+                // 匹配YouTube视频链接中的各种格式
+                const regExp = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com\/(?:[^\/\n\s]+\/\S+\/|(?:v|e(?:mbed)?)\/|\S*?[?&]v=)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+                const match = url.match(regExp);
+                return match && match[1] ? match[1] : null;
+            }
+
+            // 国家数据
+            const countriesData = [
+                {
+                    name: "Japan",
+                    code: "jp",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/jp.png",
+                        "https://flagpedia.net/data/flags/w640/jp.png",
+                        "https://picsum.photos/seed/jp/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=F4ksY1hXpV4",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=F4ksY1hXpV4"),
+                    capital: "Tokyo",
+                    language: "Japanese",
+                    cuisine: "Sushi, Ramen, Tempura",
+                    fact: "Japan has over 6,800 islands and is famous for technology and tradition.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Japan?",
+                            options: ["Beijing", "Tokyo", "Seoul", "Bangkok"],
+                            correctAnswer: "Tokyo"
+                        },
+                        {
+                            question: "Which of these is a traditional Japanese food?",
+                            options: ["Tacos", "Pizza", "Sushi", "Paella"],
+                            correctAnswer: "Sushi"
+                        },
+                        {
+                            question: "What is the name of the traditional Japanese martial art that uses swords?",
+                            options: ["Karate", "Judo", "Kendo", "Taekwondo"],
+                            correctAnswer: "Kendo"
+                        }
+                    ]
+                },
+                {
+                    name: "Brazil",
+                    code: "br",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/br.png",
+                        "https://flagpedia.net/data/flags/w640/br.png",
+                        "https://picsum.photos/seed/br/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=_0ZkeFtkWNA&t=1s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=_0ZkeFtkWNA&t=1s"),
+                    capital: "Brasília",
+                    language: "Portuguese",
+                    cuisine: "Feijoada, Brigadeiro",
+                    fact: "Brazil is home to the Amazon rainforest and famous for Carnival.",
+                    questions: [
+                        {
+                            question: "What is the official language of Brazil?",
+                            options: ["Spanish", "Portuguese", "French", "English"],
+                            correctAnswer: "Portuguese"
+                        },
+                        {
+                            question: "Which famous festival is celebrated in Rio de Janeiro?",
+                            options: ["Oktoberfest", "Carnival", "Diwali", "Holi"],
+                            correctAnswer: "Carnival"
+                        },
+                        {
+                            question: "What is the largest rainforest located in Brazil?",
+                            options: ["Congo", "Amazon", "Daintree", "Sundarbans"],
+                            correctAnswer: "Amazon"
+                        }
+                    ]
+                },
+                {
+                    name: "France",
+                    code: "fr",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/fr.png",
+                        "https://flagpedia.net/data/flags/w640/fr.png",
+                        "https://picsum.photos/seed/fr/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=sah8YcgoANI",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=sah8YcgoANI"),
+                    capital: "Paris",
+                    language: "French",
+                    cuisine: "Croissants, Cheese, Wine",
+                    fact: "France is the world's most visited country.",
+                    questions: [
+                        {
+                            question: "What is the capital city of France?",
+                            options: ["London", "Berlin", "Paris", "Madrid"],
+                            correctAnswer: "Paris"
+                        },
+                        {
+                            question: "Which of these is a famous French landmark?",
+                            options: ["Eiffel Tower", "Colosseum", "Statue of Liberty", "Big Ben"],
+                            correctAnswer: "Eiffel Tower"
+                        },
+                        {
+                            question: "What is a traditional French pastry?",
+                            options: ["Croissant", "Tiramisu", "Empanada", "Sushi"],
+                            correctAnswer: "Croissant"
+                        }
+                    ]
+                },
+                {
+                    name: "Canada",
+                    code: "ca",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/ca.png",
+                        "https://flagpedia.net/data/flags/w640/ca.png",
+                        "https://picsum.photos/seed/ca/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=p4UW391s8rA&t=1s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=p4UW391s8rA&t=1s"),
+                    capital: "Ottawa",
+                    language: "English, French",
+                    cuisine: "Poutine, Maple Syrup",
+                    fact: "Canada has the world's longest coastline.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Canada?",
+                            options: ["Toronto", "Vancouver", "Ottawa", "Montreal"],
+                            correctAnswer: "Ottawa"
+                        },
+                        {
+                            question: "Which animal is a national symbol of Canada?",
+                            options: ["Kangaroo", "Beaver", "Eagle", "Lion"],
+                            correctAnswer: "Beaver"
+                        },
+                        {
+                            question: "What is a famous Canadian food made with fries, cheese curds and gravy?",
+                            options: ["Poutine", "Tacos", "Fish and Chips", "Burgers"],
+                            correctAnswer: "Poutine"
+                        }
+                    ]
+                },
+                {
+                    name: "Germany",
+                    code: "de",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/de.png",
+                        "https://flagpedia.net/data/flags/w640/de.png",
+                        "https://picsum.photos/seed/de/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=j6xSiSC0QXc&t=14s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=j6xSiSC0QXc&t=14s"),
+                    capital: "Berlin",
+                    language: "German",
+                    cuisine: "Bratwurst, Pretzels",
+                    fact: "Germany is famous for engineering and Oktoberfest.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Germany?",
+                            options: ["Munich", "Berlin", "Frankfurt", "Hamburg"],
+                            correctAnswer: "Berlin"
+                        },
+                        {
+                            question: "Which famous festival in Germany celebrates beer?",
+                            options: ["Carnival", "Oktoberfest", "Christmas Market", "Mardi Gras"],
+                            correctAnswer: "Oktoberfest"
+                        },
+                        {
+                            question: "What is a traditional German sausage?",
+                            options: ["Bratwurst", "Chorizo", "Sausage Roll", "Pepperoni"],
+                            correctAnswer: "Bratwurst"
+                        }
+                    ]
+                },
+                {
+                    name: "Italy",
+                    code: "it",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/it.png",
+                        "https://flagpedia.net/data/flags/w640/it.png",
+                        "https://picsum.photos/seed/it/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=c2yYQIx2LeI&t=736s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=c2yYQIx2LeI&t=736s"),
+                    capital: "Rome",
+                    language: "Italian",
+                    cuisine: "Pizza, Pasta, Gelato",
+                    fact: "Italy has the most UNESCO World Heritage sites.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Italy?",
+                            options: ["Milan", "Venice", "Rome", "Florence"],
+                            correctAnswer: "Rome"
+                        },
+                        {
+                            question: "Which Italian city is famous for its canals?",
+                            options: ["Rome", "Venice", "Naples", "Turin"],
+                            correctAnswer: "Venice"
+                        },
+                        {
+                            question: "What food originated in Naples, Italy?",
+                            options: ["Tacos", "Sushi", "Pizza", "Curry"],
+                            correctAnswer: "Pizza"
+                        }
+                    ]
+                },
+                {
+                    name: "Australia",
+                    code: "au",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/au.png",
+                        "https://flagpedia.net/data/flags/w640/au.png",
+                        "https://picsum.photos/seed/au/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=vW1ei0CyACk&t=14s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=vW1ei0CyACk&t=14s"),
+                    capital: "Canberra",
+                    language: "English",
+                    cuisine: "Vegemite, Tim Tams",
+                    fact: "Australia is both a country and a continent.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Australia?",
+                            options: ["Sydney", "Melbourne", "Canberra", "Brisbane"],
+                            correctAnswer: "Canberra"
+                        },
+                        {
+                            question: "Which animal is unique to Australia?",
+                            options: ["Lion", "Kangaroo", "Panda", "Elephant"],
+                            correctAnswer: "Kangaroo"
+                        },
+                        {
+                            question: "What is the name of the large coral reef system in Australia?",
+                            options: ["Great Barrier Reef", "Red Sea Reef", "Caribbean Reef", "Great Lakes Reef"],
+                            correctAnswer: "Great Barrier Reef"
+                        }
+                    ]
+                },
+                {
+                    name: "Spain",
+                    code: "es",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/es.png",
+                        "https://flagpedia.net/data/flags/w640/es.png",
+                        "https://picsum.photos/seed/es/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=8cE5JXU8YmQ&t=16s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=8cE5JXU8YmQ&t=16s"),
+                    capital: "Madrid",
+                    language: "Spanish",
+                    cuisine: "Paella, Tapas",
+                    fact: "Spain has the second most UNESCO sites.",
+                    questions: [
+                        {
+                            question: "What is the capital city of Spain?",
+                            options: ["Barcelona", "Madrid", "Seville", "Valencia"],
+                            correctAnswer: "Madrid"
+                        },
+                        {
+                            question: "Which Spanish city is famous for its architecture by Gaudi?",
+                            options: ["Madrid", "Valencia", "Barcelona", "Granada"],
+                            correctAnswer: "Barcelona"
+                        },
+                        {
+                            question: "What is a traditional Spanish rice dish?",
+                            options: ["Paella", "Tacos", "Pizza", "Sushi"],
+                            correctAnswer: "Paella"
+                        }
+                    ]
+                },
+                {
+                    name: "Mexico",
+                    code: "mx",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/mx.png",
+                        "https://flagpedia.net/data/flags/w640/mx.png",
+                        "https://picsum.photos/seed/mx/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=w-aO5CCVn88&t=10s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=w-aO5CCVn88&t=10s"),
+                    capital: "Mexico City",
+                    language: "Spanish",
+                    cuisine: "Tacos, Guacamole",
+                    fact: "Mexico invented chocolate!",
+                    questions: [
+                        {
+                            question: "What is the capital city of Mexico?",
+                            options: ["Tijuana", "Cancun", "Mexico City", "Guadalajara"],
+                            correctAnswer: "Mexico City"
+                        },
+                        {
+                            question: "Which holiday is widely celebrated in Mexico to honor deceased loved ones?",
+                            options: ["Cinco de Mayo", "Day of the Dead", "Christmas", "Independence Day"],
+                            correctAnswer: "Day of the Dead"
+                        },
+                        {
+                            question: "What is a traditional Mexican food made with corn tortillas?",
+                            options: ["Pizza", "Tacos", "Sushi", "Curry"],
+                            correctAnswer: "Tacos"
+                        }
+                    ]
+                },
+                {
+                    name: "United Kingdom",
+                    code: "gb",
+                    flagUrls: [
+                        "https://flagcdn.com/w640/gb.png",
+                        "https://flagpedia.net/data/flags/w640/gb.png",
+                        "https://picsum.photos/seed/gb/640/400"
+                    ],
+                    videoUrl: "https://www.youtube.com/watch?v=BDX1L29mDWc&t=165s",
+                    videoId: extractYouTubeVideoId("https://www.youtube.com/watch?v=BDX1L29mDWc&t=165s"),
+                    capital: "London",
+                    language: "English",
+                    cuisine: "Fish and Chips",
+                    fact: "The UK includes England, Scotland, Wales, and Northern Ireland.",
+                    questions: [
+                        {
+                            question: "What is the capital city of the United Kingdom?",
+                            options: ["Manchester", "London", "Edinburgh", "Cardiff"],
+                            correctAnswer: "London"
+                        },
+                        {
+                            question: "Which of these is NOT part of the United Kingdom?",
+                            options: ["England", "Scotland", "Wales", "Republic of Ireland"],
+                            correctAnswer: "Republic of Ireland"
+                        },
+                        {
+                            question: "What is a traditional British dish consisting of fried fish and potatoes?",
+                            options: ["Fish and Chips", "Bangers and Mash", "Shepherd's Pie", "Roast Beef"],
+                            correctAnswer: "Fish and Chips"
+                        }
+                    ]
+                }
+            ];
+
+            // 验证所有视频ID是否有效
+            countriesData.forEach(country => {
+                if (!country.videoId) {
+                    console.warn(`Invalid YouTube URL for ${country.name}: ${country.videoUrl}`);
+                }
+            });
+
+            // Game state
+            let gameState = {
+                score: 0,
+                currentRound: 0,
+                totalRounds: 10,
+                timeLeft: 10,
+                timer: null,
+                currentCountry: null,
+                currentQuestion: null,
+                isPlaying: false,
+                usedCountries: []
+            };
+
+            // Get elements
+            const startScreen = document.getElementById('startScreen');
+            const gameScreen = document.getElementById('gameScreen');
+            const gameOverScreen = document.getElementById('gameOverScreen');
+            const startButton = document.getElementById('startButton');
+            const playAgainButton = document.getElementById('playAgainButton');
+            const scoreDisplay = document.getElementById('scoreDisplay');
+            const roundDisplay = document.getElementById('roundDisplay');
+            const timerDisplay = document.getElementById('timerDisplay');
+            const flagImage = document.getElementById('flagImage');
+            const flagPlaceholder = document.getElementById('flagPlaceholder');
+            const loadingSpinner = document.getElementById('loadingSpinner');
+            const optionsContainer = document.getElementById('optionsContainer');
+            const finalScoreDisplay = document.getElementById('finalScoreDisplay');
+            const progressBar = document.getElementById('progressBar');
+            const infoModal = document.getElementById('infoModal');
+            const overlay = document.getElementById('overlay');
+            const closeModal = document.getElementById('closeModal');
+            const modalTitle = document.getElementById('modalTitle');
+            const modalContent = document.getElementById('modalContent');
+            const videoLoading = document.getElementById('videoLoading');
+            const videoError = document.getElementById('videoError');
+            const videoContainer = document.getElementById('videoContainer');
+            const retryVideoBtn = document.getElementById('retryVideo');
+            const videoContainerWrapper = document.querySelector('.video-container');
+            
+            // Quiz elements
+            const quizQuestion = document.getElementById('quizQuestion');
+            const quizOptions = document.getElementById('quizOptions');
+            const quizFeedback = document.getElementById('quizFeedback');
+            const nextCountryBtn = document.getElementById('nextCountryBtn');
+
+            // Event listeners
+            startButton.addEventListener('click', startGame);
+            playAgainButton.addEventListener('click', startGame);
+            closeModal.addEventListener('click', closeInfoModal);
+            overlay.addEventListener('click', closeInfoModal);
+            retryVideoBtn.addEventListener('click', function() {
+                if (gameState.currentCountry) {
+                    videoLoading.style.display = "flex";
+                    videoError.style.display = "none";
+                    loadVideo(gameState.currentCountry);
+                }
+            });
+            nextCountryBtn.addEventListener('click', function() {
+                closeInfoModal();
+            });
+
+            // 添加视频全屏切换功能
+            videoContainerWrapper.addEventListener('click', function(e) {
+                // 检查是否点击了视频容器但不是按钮等其他元素
+                if (e.target === videoContainerWrapper || e.target.classList.contains('youtube-embed')) {
+                    toggleFullscreen();
+                }
+            });
+
+            // 全屏切换函数
+            function toggleFullscreen() {
+                const iframe = videoContainer.querySelector('iframe');
+                if (!iframe) return;
+
+                // 检查浏览器全屏支持
+                if (document.fullscreenEnabled || 
+                    document.webkitFullscreenEnabled || 
+                    document.msFullscreenEnabled) {
+                    
+                    try {
+                        // 尝试让iframe进入全屏
+                        if (iframe.requestFullscreen) {
+                            iframe.requestFullscreen();
+                        } else if (iframe.webkitRequestFullscreen) {
+                            iframe.webkitRequestFullscreen();
+                        } else if (iframe.msRequestFullscreen) {
+                            iframe.msRequestFullscreen();
+                        }
+                    } catch (error) {
+                        console.error("Error attempting to enable full-screen mode:", error);
+                        // 备选方案：让整个视频容器进入全屏
+                        try {
+                            if (videoContainerWrapper.requestFullscreen) {
+                                videoContainerWrapper.requestFullscreen();
+                            } else if (videoContainerWrapper.webkitRequestFullscreen) {
+                                videoContainerWrapper.webkitRequestFullscreen();
+                            } else if (videoContainerWrapper.msRequestFullscreen) {
+                                videoContainerWrapper.msRequestFullscreen();
+                            }
+                        } catch (error2) {
+                            console.error("Fallback full-screen attempt failed:", error2);
+                        }
+                    }
+                }
+            }
+
+            // 监听全屏状态变化
+            document.addEventListener('fullscreenchange', handleFullscreenChange);
+            document.addEventListener('webkitfullscreenchange', handleFullscreenChange);
+            document.addEventListener('msfullscreenchange', handleFullscreenChange);
+
+            function handleFullscreenChange() {
+                // 可以在这里添加全屏状态变化时的处理逻辑
+                const isFullscreen = !!document.fullscreenElement || 
+                                   !!document.webkitFullscreenElement || 
+                                   !!document.msFullscreenElement;
+                
+                if (isFullscreen) {
+                    console.log('Entered fullscreen mode');
+                } else {
+                                        playSfx('wrong');
+console.log('Exited fullscreen mode');
+                }
+            }
+
+            // Start game function
+            function startGame() {
+                gameState.score = 0;
+                gameState.currentRound = 0;
+                gameState.isPlaying = true;
+                gameState.usedCountries = [];
+                
+                scoreDisplay.textContent = '0';
+                
+                startScreen.classList.remove('active');
+                gameOverScreen.classList.remove('active');
+                gameScreen.classList.add('active');
+                
+                nextRound();
+            }
+
+            // Next round
+            function nextRound() {
+                if (gameState.currentRound >= gameState.totalRounds) {
+                    endGame();
+                    return;
+                }
+                
+                gameState.currentRound++;
+                gameState.timeLeft = 10;
+                
+                // Update displays
+                roundDisplay.textContent = `${gameState.currentRound}/${gameState.totalRounds}`;
+                timerDisplay.textContent = '10s';
+                timerDisplay.className = 'timer';
+                
+                // Update progress bar
+                const progress = (gameState.currentRound / gameState.totalRounds) * 100;
+                progressBar.style.width = progress + '%';
+                
+                // Get random country (avoid repetition)
+                let availableCountries = countriesData.filter(c => !gameState.usedCountries.includes(c.name));
+                if (availableCountries.length === 0) {
+                    gameState.usedCountries = [];
+                    availableCountries = countriesData;
+                }
+                
+                const randomIndex = Math.floor(Math.random() * availableCountries.length);
+                gameState.currentCountry = availableCountries[randomIndex];
+                gameState.usedCountries.push(gameState.currentCountry.name);
+                
+                // Reset flag display elements
+                flagImage.style.display = 'none';
+                flagPlaceholder.style.display = 'none';
+                loadingSpinner.style.display = 'block';
+                
+                // Load flag with multiple fallback URLs
+                loadFlagWithFallbacks(gameState.currentCountry.flagUrls, 0);
+                
+                // Create options
+                createOptions();
+                
+                // Start timer
+                startTimer();
+            }
+
+            // Load flag with fallback URLs
+            function loadFlagWithFallbacks(urls, index) {
+                if (index >= urls.length) {
+                    loadingSpinner.style.display = 'none';
+                    flagPlaceholder.style.display = 'block';
+                    return;
+                }
+                
+                flagImage.onload = function() {
+                    loadingSpinner.style.display = 'none';
+                    flagImage.style.display = 'block';
+                };
+                
+                flagImage.onerror = function() {
+                    console.log(`Failed to load ${urls[index]}, trying next URL...`);
+                    loadFlagWithFallbacks(urls, index + 1);
+                };
+                
+                flagImage.src = urls[index];
+                flagImage.alt = `${gameState.currentCountry.name} flag`;
+            }
+
+            // Create answer options
+            function createOptions() {
+                optionsContainer.innerHTML = '';
+                
+                // Get 3 wrong answers
+                let wrongAnswers = countriesData
+                    .filter(c => c.name !== gameState.currentCountry.name)
+                    .sort(() => Math.random() - 0.5)
+                    .slice(0, 3)
+                    .map(c => c.name);
+                
+                // Add correct answer
+                let allOptions = [...wrongAnswers, gameState.currentCountry.name];
+                allOptions.sort(() => Math.random() - 0.5);
+                
+                // Create buttons
+                allOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'option-btn';
+                    button.textContent = option;
+                    button.addEventListener('click', () => checkAnswer(option, button));
+                    optionsContainer.appendChild(button);
+                });
+            }
+
+            // Check answer
+            function checkAnswer(answer, button) {
+                if (!gameState.isPlaying) return;
+                
+                clearInterval(gameState.timer);
+                gameState.isPlaying = false;
+                
+                // Disable all buttons
+                const allButtons = optionsContainer.querySelectorAll('.option-btn');
+                allButtons.forEach(btn => {
+                    btn.disabled = true;
+                    if (btn.textContent === gameState.currentCountry.name) {
+                        btn.classList.add('correct');
+                    }
+                });
+                
+                if (answer === gameState.currentCountry.name) {
+                    // Correct answer
+                    
+                    playSfx('correct');
+button.classList.add('correct');
+                    gameState.score += 100;
+                    scoreDisplay.textContent = gameState.score;
+                    
+                    // Show country info with video and quiz
+                    showCountryInfo();
+                    
+                } else {
+                    // Wrong answer
+                    
+                    playSfx('wrong');
+button.classList.add('wrong');
+                    
+                    setTimeout(() => {
+                        gameState.isPlaying = true;
+                        nextRound();
+                    }, 2000);
+                }
+            }
+
+            // Timer function
+            function startTimer() {
+                clearInterval(gameState.timer);
+                
+                gameState.timer = setInterval(() => {
+                    gameState.timeLeft--;
+                    timerDisplay.textContent = gameState.timeLeft + 's';
+                    
+                    // Change color based on time
+                    if (gameState.timeLeft <= 3) {
+                        timerDisplay.className = 'timer danger';
+                    } else if (gameState.timeLeft <= 5) {
+                        timerDisplay.className = 'timer warning';
+                    }
+                    
+                    if (gameState.timeLeft <= 0) {
+                        clearInterval(gameState.timer);
+                        
+                        // Time's up
+                        const allButtons = optionsContainer.querySelectorAll('.option-btn');
+                        allButtons.forEach(btn => {
+                            btn.disabled = true;
+                            if (btn.textContent === gameState.currentCountry.name) {
+                                btn.classList.add('correct');
+                            }
+                        });
+                        
+                        setTimeout(() => {
+                            gameState.isPlaying = true;
+                            nextRound();
+                        }, 2000);
+                    }
+                }, 1000);
+            }
+
+            // Show country info with video and quiz
+            function showCountryInfo() {
+                const country = gameState.currentCountry;
+                modalTitle.textContent = `${country.name}`;
+                
+                // Set text content
+                modalContent.innerHTML = `
+                    <div class="info-item">
+                        <span class="info-label">Capital:</span> ${country.capital}
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Language:</span> ${country.language}
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Famous Food:</span> ${country.cuisine}
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">Fun Fact:</span> ${country.fact}
+                    </div>
+                `;
+
+                // Clear previous video and quiz
+                videoContainer.innerHTML = '';
+                quizOptions.innerHTML = '';
+                quizFeedback.style.display = 'none';
+                nextCountryBtn.style.display = 'none';
+                
+                // Show loading state
+                videoLoading.style.display = "flex";
+                videoError.style.display = "none";
+                
+                // Show modal
+                infoModal.classList.add('show');
+                overlay.classList.add('show');
+                
+                // Load video
+                loadVideo(country);
+                
+                // Load quiz
+                loadQuiz(country);
+            }
+
+            // Load quiz for the country
+            function loadQuiz(country) {
+                // Select a random question from the country's questions
+                const randomQuestionIndex = Math.floor(Math.random() * country.questions.length);
+                gameState.currentQuestion = country.questions[randomQuestionIndex];
+                
+                // Display the question
+                quizQuestion.textContent = gameState.currentQuestion.question;
+                
+                // Clear previous options
+                quizOptions.innerHTML = '';
+                
+                // Create answer options buttons
+                const shuffledOptions = [...gameState.currentQuestion.options].sort(() => Math.random() - 0.5);
+                shuffledOptions.forEach(option => {
+                    const button = document.createElement('button');
+                    button.className = 'quiz-option';
+                    button.textContent = option;
+                    button.addEventListener('click', () => checkQuizAnswer(option, button));
+                    quizOptions.appendChild(button);
+                });
+            }
+
+            // Check quiz answer
+            function checkQuizAnswer(answer, button) {
+                // Disable all options
+                const allOptions = quizOptions.querySelectorAll('.quiz-option');
+                allOptions.forEach(btn => {
+                    btn.disabled = true;
+                });
+                
+                // Check if answer is correct
+                if (answer === gameState.currentQuestion.correctAnswer) {
+                                        playSfx('correct');
+button.classList.add('correct');
+                    quizFeedback.textContent = "Correct! Well done.";
+                    quizFeedback.className = 'quiz-feedback correct';
+                    
+                    // Add bonus points for correct quiz answer
+                    gameState.score += 50;
+                    scoreDisplay.textContent = gameState.score;
+                } else {
+                    button.classList.add('wrong');
+                    quizFeedback.textContent = `Incorrect. The correct answer is: ${gameState.currentQuestion.correctAnswer}`;
+                    quizFeedback.className = 'quiz-feedback incorrect';
+                    
+                    // Highlight the correct answer
+                    allOptions.forEach(btn => {
+                        if (btn.textContent === gameState.currentQuestion.correctAnswer) {
+                            btn.classList.add('correct');
+                        }
+                    });
+                }
+                
+                // Show feedback and next button
+                quizFeedback.style.display = 'block';
+                nextCountryBtn.style.display = 'block';
+            }
+
+            // Load YouTube video with fullscreen support
+            function loadVideo(country) {
+                try {
+                    if (!country.videoId) {
+                        throw new Error("Invalid YouTube video ID");
+                    }
+                    
+                    // 创建YouTube嵌入iframe，优化全屏支持参数
+                    const iframe = document.createElement('iframe');
+                    iframe.className = 'youtube-embed';
+                    // 添加fs=1参数启用全屏按钮
+                    const timeParamMatch = country.videoUrl.match(/t=(\d+)s/);
+                    const startTime = timeParamMatch ? `&start=${timeParamMatch[1]}` : '';
+                    iframe.src = `https://www.youtube.com/embed/${country.videoId}?autoplay=1&rel=0&controls=1&showinfo=0&fs=1${startTime}`;
+                    iframe.title = `${country.name} - Video from YouTube`;
+                    iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; fullscreen';
+                    iframe.allowFullscreen = true;
+                    
+                    // 视频加载错误处理
+                    iframe.onerror = function() {
+                        console.error(`Failed to load YouTube video for ${country.name}`);
+                        videoLoading.style.display = "none";
+                        videoError.style.display = "flex";
+                    };
+                    
+                    // 添加iframe到容器
+                    videoContainer.appendChild(iframe);
+                    
+                    // 设置超时检查
+                    setTimeout(() => {
+                        try {
+                            videoLoading.style.display = "none";
+                        } catch (error) {
+                            console.error(error);
+                            videoLoading.style.display = "none";
+                            videoError.style.display = "flex";
+                        }
+                    }, 8000); // 8秒超时
+                    
+                } catch (error) {
+                    console.error("Error loading YouTube video:", error);
+                    videoLoading.style.display = "none";
+                    videoError.style.display = "flex";
+                }
+            }
+
+            // Close modal
+            function closeInfoModal() {
+                // 退出全屏模式（如果正在全屏）
+                if (document.fullscreenElement) {
+                    if (document.exitFullscreen) {
+                        document.exitFullscreen();
+                    } else if (document.webkitExitFullscreen) {
+                        document.webkitExitFullscreen();
+                    } else if (document.msExitFullscreen) {
+                        document.msExitFullscreen();
+                    }
+                }
+                
+                infoModal.classList.remove('show');
+                overlay.classList.remove('show');
+                
+                // 关闭时停止视频播放
+                videoContainer.innerHTML = '';
+                
+                // 延迟进入下一轮
+                setTimeout(() => {
+                    gameState.isPlaying = true;
+                    nextRound();
+                }, 500);
+            }
+
+            // End game
+            function endGame() {
+                clearInterval(gameState.timer);
+                finalScoreDisplay.textContent = gameState.score;
+                
+                gameScreen.classList.remove('active');
+                gameOverScreen.classList.add('active');
+            }
+
+            console.log('Game initialized and ready!');
+        };
+    </script>
+</body>
+</html>
