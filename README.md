@@ -5,6 +5,7 @@
 > **An interactive educational web experience that turns global geography and cultural literacy into a playful learning journey.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20App-667eea?style=for-the-badge)](https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/)
+[![Project Demo](https://img.shields.io/badge/Project%20Demo-Watch%20Video-e53935?style=for-the-badge)](https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/demo.html)
 [![Repository](https://img.shields.io/badge/GitHub-Source%20Code-181717?style=for-the-badge&logo=github)](https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation)
 [![Status](https://img.shields.io/badge/Status-Educational%20Prototype-764ba2?style=for-the-badge)](#)
 
@@ -91,11 +92,17 @@ The final score provides a clear sense of achievement and encourages replay and 
 - Interactive quiz logic
 - Browser-based game state and scoring
 
-## 🎥 Demo Video
+## 🎥 Project Demo
 
-**Project demonstration:** [Watch the project demo](https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing)
+### Watch the demonstration
 
-The public Google Drive link points to the project demo video. Reviewers can use it for a quick walkthrough of the product experience.
+**[▶ Open the GitHub Pages Demo Player](https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/demo.html)**
+
+The GitHub Pages demo page embeds the project video hosted on Google Drive and provides direct links to the live application, source code, and original video file.
+
+**Direct video:** [Open the 2:33 project demonstration on Google Drive](https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing)
+
+> **Note:** The video file itself remains hosted on Google Drive. The GitHub repository now provides a dedicated GitHub Pages presentation page for the video, avoiding the need to store a large binary video file directly in the Git repository.
 
 ## 🚀 Live Demo
 
@@ -142,6 +149,7 @@ Allen is interested in building technology-enhanced learning experiences that co
 ## 🔗 Project Links
 
 - **Live Demo:** https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/
+- **Project Demo Player:** https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/demo.html
 - **GitHub Repository:** https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation
 - **Demo Video:** https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing
 
