@@ -1,5 +1,7 @@
 # 🌍 Guess the Flag — Global Culture Learning Game
 
+![Guess the Flag](assets/hero.svg)
+
 > **An interactive educational web experience that turns global geography and cultural literacy into a playful learning journey.**
 
 [![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20App-667eea?style=for-the-badge)](https://english-learning-circle.vercel.app/)
@@ -10,9 +12,27 @@
 
 **Guess the Flag** is an interactive educational game designed to strengthen students' global awareness and cultural literacy through short, engaging rounds of play.
 
-Players identify country flags under time pressure, earn points, explore country information, watch related educational videos, and reinforce their learning through quizzes. The experience combines **game mechanics + multimedia learning + cultural discovery** in one lightweight web application.
+Players identify country flags under time pressure, earn points, explore country information, watch related educational videos, and reinforce their learning through quizzes. The experience combines **game mechanics + multimedia learning + cultural discovery** in one lightweight web application. The current implementation includes a 10-round game, a 10-second timer per challenge, scoring, progress feedback, country-learning content, embedded video, and follow-up quizzes. fileciteturn21file0
 
 This project was originally developed as a Digital Technologies Innovation assignment and has been intentionally presented here as a standalone educational technology project rather than simply an academic submission.
+
+## 🌟 Why This Project Exists
+
+Many learners can recognise a flag without understanding the country behind it. **Guess the Flag** uses the moment of recognition as the starting point for deeper cultural discovery.
+
+The design question is simple:
+
+> **How can a short game turn “I know this flag” into “I want to know more about this country”?**
+
+## 🧠 Learning Experience
+
+![Learning Flow](assets/learning-flow.svg)
+
+The experience follows:
+
+**Recognise → Answer → Receive Feedback → Explore → Quiz → Reinforce**
+
+Instead of treating the quiz as the final destination, the game uses it as an entry point into broader learning.
 
 ## ✨ Core Experience
 
@@ -35,31 +55,13 @@ The project is built around a simple principle:
 
 > **Turn recognition into curiosity, and curiosity into learning.**
 
-Rather than stopping at “Which country is this?”, the experience encourages learners to discover more about the country and connect geography with cultural knowledge.
+## 🏗️ Project Architecture
 
-## 🧠 Learning Design
+![Project Architecture](assets/project-architecture.svg)
 
-The learning flow follows a lightweight cycle:
+The application is deliberately lightweight and browser-based. The repository currently contains the HTML game implementation, with styling and interaction logic embedded in the web application. The project is designed for modern browsers including Chrome, Safari, Firefox, and Microsoft Edge. fileciteturn22file0
 
-**Recognise → Answer → Receive Feedback → Explore → Quiz → Reinforce**
-
-This approach blends retrieval practice with multimedia learning and game-based engagement.
-
-## 🖥️ Technology
-
-The project is implemented as a lightweight, browser-based web application using:
-
-- **HTML5**
-- **CSS3**
-- **Vanilla JavaScript**
-- Responsive web design
-- Embedded video content
-- Interactive quiz logic
-- Browser-based game state and scoring
-
-The application is designed to work across modern browsers including **Chrome, Safari, Firefox, and Microsoft Edge**.
-
-## 🎮 Main Screens
+## 🖥️ Main Experience
 
 ### Start Screen
 Introduces the learning objective and game rules before the learner begins.
@@ -74,14 +76,38 @@ Displays:
 - Progress indicator
 
 ### Learning & Quiz Experience
-After a challenge, learners can move from simple identification into country exploration and quiz-based reinforcement.
+The country information layer extends the experience beyond the answer itself, using video and quiz interaction to support further exploration.
 
 ### Results
-The final score gives learners a clear sense of achievement and encourages replay and continued practice.
+The final score provides a clear sense of achievement and encourages replay and continued practice.
+
+## 💻 Technology
+
+- **HTML5**
+- **CSS3**
+- **Vanilla JavaScript**
+- Responsive web design
+- Embedded video content
+- Interactive quiz logic
+- Browser-based game state and scoring
+
+## 🎥 Demo Video
+
+**Project demonstration:** [Watch the 2:33 demo video](https://drive.google.com/file/d/1RdD4iRmQR85VftLrQbCIK5RDnHvn5i4/view?usp=drive_link)
+
+The video demonstrates the project experience and is intended to give reviewers a quick understanding of the product flow.
+
+## 🚀 Live Demo
+
+**Try the project:** https://english-learning-circle.vercel.app/
+
+## 📸 Project Materials
+
+The repository now includes a project hero banner, learning-flow diagram, and architecture diagram so that the work can be understood as a complete portfolio project rather than only a code submission.
 
 ## 🌱 Educational Value
 
-**Guess the Flag** is more than a geography quiz. It is designed as a reusable pattern for educational experiences where short interactions lead to deeper exploration.
+**Guess the Flag** is more than a geography quiz. It is a reusable pattern for educational experiences where short interactions lead to deeper exploration.
 
 Potential applications include:
 
@@ -105,17 +131,6 @@ Potential next-stage improvements include:
 6. AI-generated explanations and personalised feedback
 7. Cloud-backed content and analytics
 
-## 🎥 Demo & Project Story
-
-A short demonstration video can be linked here when publishing a project walkthrough.
-
-**Demo video:** _Add your public video link here_
-
-## 🔗 Links
-
-- **Live Demo:** https://english-learning-circle.vercel.app/
-- **GitHub Repository:** https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation
-
 ## 👤 Creator
 
 **Allen Yeung**
@@ -124,8 +139,14 @@ Education professional · Digital Technology enthusiast · AI & Cloud learner
 
 Allen is interested in building technology-enhanced learning experiences that connect education, interactive media, and emerging AI technologies.
 
+## 🔗 Project Links
+
+- **Live Demo:** https://english-learning-circle.vercel.app/
+- **GitHub Repository:** https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation
+- **Demo Video:** https://drive.google.com/file/d/1RdD4iRmQR85VftLrQbCIK5RDnHvn5i4/view?usp=drive_link
+
 ---
 
 ### From assignment to portfolio project
 
-This repository began as **Assignment 4 – Digital Technologies Innovation**. It is now documented as an independent educational technology project so that the idea, learning design, implementation, and future development direction are visible beyond the original academic context.
+This repository began as **Assignment 4 – Digital Technologies Innovation**. It is now documented as an independent educational technology project so that the idea, learning design, implementation, visuals, demo, and future development direction are visible beyond the original academic context.
