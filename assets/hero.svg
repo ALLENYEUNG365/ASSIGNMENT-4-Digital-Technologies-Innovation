@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="700" viewBox="0 0 1600 700">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#667eea"/><stop offset="1" stop-color="#764ba2"/></linearGradient></defs>
+<rect width="1600" height="700" rx="36" fill="url(#g)"/>
+<circle cx="1320" cy="130" r="180" fill="#fff" opacity=".08"/><circle cx="1450" cy="560" r="260" fill="#fff" opacity=".06"/>
+<text x="110" y="250" font-family="Arial,Helvetica,sans-serif" font-size="92" font-weight="700" fill="white">Guess the Flag</text>
+<text x="110" y="335" font-family="Arial,Helvetica,sans-serif" font-size="38" fill="white" opacity=".92">Global Culture Learning Game</text>
+<text x="110" y="405" font-family="Arial,Helvetica,sans-serif" font-size="25" fill="white" opacity=".82">Recognise → Explore → Quiz → Reinforce</text>
+<text x="110" y="555" font-family="Arial,Helvetica,sans-serif" font-size="24" fill="white" opacity=".78">An educational technology project by Allen Yeung</text>
+<g transform="translate(1130 250)"><rect width="280" height="190" rx="24" fill="white" opacity=".96"/><text x="140" y="75" text-anchor="middle" font-size="70">🌍</text><text x="140" y="125" text-anchor="middle" font-family="Arial" font-size="22" font-weight="700" fill="#764ba2">LEARN THROUGH PLAY</text><text x="140" y="158" text-anchor="middle" font-family="Arial" font-size="17" fill="#555">10 rounds · 10 seconds</text></g>
+</svg>
