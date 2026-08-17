@@ -4,7 +4,7 @@
 
 > **An interactive educational web experience that turns global geography and cultural literacy into a playful learning journey.**
 
-[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20App-667eea?style=for-the-badge)](https://english-learning-circle.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-Open%20App-667eea?style=for-the-badge)](https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/)
 [![Repository](https://img.shields.io/badge/GitHub-Source%20Code-181717?style=for-the-badge&logo=github)](https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation)
 [![Status](https://img.shields.io/badge/Status-Educational%20Prototype-764ba2?style=for-the-badge)](#)
 
@@ -12,7 +12,7 @@
 
 **Guess the Flag** is an interactive educational game designed to strengthen students' global awareness and cultural literacy through short, engaging rounds of play.
 
-Players identify country flags under time pressure, earn points, explore country information, watch related educational videos, and reinforce their learning through quizzes. The experience combines **game mechanics + multimedia learning + cultural discovery** in one lightweight web application. The current implementation includes a 10-round game, a 10-second timer per challenge, scoring, progress feedback, country-learning content, embedded video, and follow-up quizzes. fileciteturn21file0
+Players identify country flags under time pressure, earn points, explore country information, watch related educational videos, and reinforce their learning through quizzes. The current implementation includes a 10-round game, a 10-second timer per challenge, scoring, progress feedback, country-learning content, embedded video, and follow-up quizzes.
 
 This project was originally developed as a Digital Technologies Innovation assignment and has been intentionally presented here as a standalone educational technology project rather than simply an academic submission.
 
@@ -44,7 +44,7 @@ Instead of treating the quiz as the final destination, the game uses it as an en
 - Visual feedback for correct and incorrect answers
 
 ### 🌎 Explore Beyond the Flag
-After gameplay, learners can open country information and continue learning through:
+After gameplay, learners can continue learning through:
 - Country facts
 - Embedded educational video content
 - Follow-up quizzes
@@ -59,7 +59,7 @@ The project is built around a simple principle:
 
 ![Project Architecture](assets/project-architecture.svg)
 
-The application is deliberately lightweight and browser-based. The repository currently contains the HTML game implementation, with styling and interaction logic embedded in the web application. The project is designed for modern browsers including Chrome, Safari, Firefox, and Microsoft Edge. fileciteturn22file0
+The application is deliberately lightweight and browser-based. The repository contains the HTML game implementation, with styling and interaction logic embedded in the web application. It is designed for modern browsers including Chrome, Safari, Firefox, and Microsoft Edge.
 
 ## 🖥️ Main Experience
 
@@ -93,17 +93,17 @@ The final score provides a clear sense of achievement and encourages replay and 
 
 ## 🎥 Demo Video
 
-**Project demonstration:** [Watch the 2:33 demo video](https://drive.google.com/file/d/1RdD4iRmQR85VftLrQbCIK5RDnHvn5i4/view?usp=drive_link)
+**Project demonstration:** [Watch the project demo](https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing)
 
-The video demonstrates the project experience and is intended to give reviewers a quick understanding of the product flow.
+The public Google Drive link points to the project demo video. Reviewers can use it for a quick walkthrough of the product experience.
 
 ## 🚀 Live Demo
 
-**Try the project:** https://english-learning-circle.vercel.app/
+**Try the project:** https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/
 
 ## 📸 Project Materials
 
-The repository now includes a project hero banner, learning-flow diagram, and architecture diagram so that the work can be understood as a complete portfolio project rather than only a code submission.
+The repository includes a project hero banner, learning-flow diagram, and architecture diagram so that the work can be understood as a complete portfolio project rather than only a code submission.
 
 ## 🌱 Educational Value
 
@@ -141,9 +141,9 @@ Allen is interested in building technology-enhanced learning experiences that co
 
 ## 🔗 Project Links
 
-- **Live Demo:** https://english-learning-circle.vercel.app/
+- **Live Demo:** https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/
 - **GitHub Repository:** https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation
-- **Demo Video:** https://drive.google.com/file/d/1RdD4iRmQR85VftLrQbCIK5RDnHvn5i4/view?usp=drive_link
+- **Demo Video:** https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing
 
 ---
 
