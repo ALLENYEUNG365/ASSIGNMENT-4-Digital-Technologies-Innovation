@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess the Flag — Project Demo</title>
+  <meta name="description" content="Project demonstration for Guess the Flag — Global Culture Learning Game by Allen Yeung.">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: linear-gradient(135deg, #eef2ff, #f8f5ff);
+      color: #172033;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 32px 18px;
+    }
+    .card {
+      width: min(1100px, 100%);
+      background: rgba(255,255,255,.96);
+      border-radius: 24px;
+      padding: 28px;
+      box-shadow: 0 20px 60px rgba(40, 35, 80, .16);
+    }
+    h1 { margin: 0 0 8px; font-size: clamp(28px, 4vw, 44px); }
+    p { line-height: 1.65; color: #566176; }
+    .video {
+      margin-top: 24px;
+      position: relative;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+      border-radius: 18px;
+      background: #000;
+    }
+    iframe { width: 100%; height: 100%; border: 0; }
+    .links { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 22px; }
+    a {
+      display: inline-block;
+      padding: 11px 16px;
+      border-radius: 999px;
+      background: #eef2ff;
+      color: #3848a8;
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .note { font-size: 14px; margin-top: 18px; }
+  </style>
+</head>
+<body>
+  <main class="card">
+    <h1>🌍 Guess the Flag — Project Demo</h1>
+    <p>
+      A short demonstration of Allen Yeung's educational technology project,
+      designed to turn flag recognition into cultural discovery through gameplay,
+      multimedia learning and follow-up quizzes.
+    </p>
+
+    <div class="video">
+      <iframe
+        src="https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/preview"
+        title="Guess the Flag project demonstration video"
+        allow="autoplay; fullscreen"
+        allowfullscreen>
+      </iframe>
+    </div>
+
+    <div class="links">
+      <a href="https://allenyeung365.github.io/ASSIGNMENT-4-Digital-Technologies-Innovation/">🚀 Open Live Project</a>
+      <a href="https://github.com/ALLENYEUNG365/ASSIGNMENT-4-Digital-Technologies-Innovation">💻 View Source Code</a>
+      <a href="https://drive.google.com/file/d/1BzGPbT1nUrdb4L8-MhsHGcglKYfKjred/view?usp=sharing">🎥 Open Video on Google Drive</a>
+    </div>
+
+    <p class="note">
+      If the embedded player does not load, use the Google Drive button above. The video file remains hosted on Google Drive while this page provides a GitHub Pages presentation layer.
+    </p>
+  </main>
+</body>
+</html>
