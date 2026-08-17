@@ -11,6 +11,11 @@
 
 ## 🎯 Project Overview
 
+<img width="2680" height="1384" alt="image" src="https://github.com/user-attachments/assets/a0ef717d-5be9-47a3-8fd1-f06acde917b1" />
+<img width="2710" height="1400" alt="image" src="https://github.com/user-attachments/assets/f5ea8b92-9aaa-4e24-93d9-8ae92662dd9e" />
+<img width="2682" height="1526" alt="image" src="https://github.com/user-attachments/assets/cf5b34d4-4db4-49a9-8867-8438bbbe99ce" />
+<img width="2642" height="1366" alt="image" src="https://github.com/user-attachments/assets/a1c23696-8d18-4925-b7e8-6396e26538e2" />
+
 **Guess the Flag** is an interactive educational game designed to strengthen students' global awareness and cultural literacy through short, engaging rounds of play.
 
 Players identify country flags under time pressure, earn points, explore country information, watch related educational videos, and reinforce their learning through quizzes. The current implementation includes a 10-round game, a 10-second timer per challenge, scoring, progress feedback, country-learning content, embedded video, and follow-up quizzes.
