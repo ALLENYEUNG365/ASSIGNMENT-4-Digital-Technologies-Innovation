@@ -41,6 +41,7 @@ The experience follows:
 Instead of treating the quiz as the final destination, the game uses it as an entry point into broader learning.
 
 ## ✨ Core Experience
+<img width="1536" height="1024" alt="image" src="https://github.com/user-attachments/assets/3838c587-9921-47d2-9381-fb89d5ea3318" />
 
 ### 🏁 Learn Through Play
 - 10-second challenge per flag
